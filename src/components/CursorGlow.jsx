@@ -80,11 +80,12 @@ function CursorGlow() {
         transform: "translate(-50%, -50%)",
         width: "200px",
         height: "200px",
-        background: "radial-gradient(circle, rgba(34, 211, 238, 0.4) 0%, rgba(34, 211, 238, 0.25) 25%, rgba(77, 124, 255, 0.15) 50%, transparent 75%)",
+        background: "radial-gradient(circle, rgba(34, 211, 238, 0.6) 0%, rgba(34, 211, 238, 0.4) 20%, rgba(77, 124, 255, 0.3) 40%, rgba(77, 124, 255, 0.2) 60%, transparent 80%)",
         filter: "blur(30px)",
         willChange: "transform",
         transition: "none",
-        zIndex: 1
+        zIndex: 9999,
+        mixBlendMode: "screen"
       }}
       aria-hidden="true"
     />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, useReducedMotion } from "motion/react"
 import { ArrowUpRight, CheckCircle2, Globe, ExternalLink } from "lucide-react"
 import { contactContent } from "../data/contact"
@@ -17,9 +17,40 @@ function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const shouldReduceMotion = useReducedMotion()
+  const videoRef = useRef(null)
 
   // Generate random math question
   const [mathQuestion, setMathQuestion] = useState({ num1: 0, num2: 0, answer: 0 })
+
+  // Ensure video plays when section comes into view
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoElement.play().catch(error => {
+              console.log("Video autoplay failed:", error)
+            })
+          }
+        })
+      },
+      { threshold: 0.1 } // Play when 10% of video is visible
+    )
+
+    observer.observe(videoElement)
+
+    // Also try to play immediately on mount
+    videoElement.play().catch(() => {
+      // Silently fail if autoplay is blocked
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   // Generate new math question on component mount
   useEffect(() => {
@@ -146,11 +177,13 @@ function Contact() {
       {/* Blue Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
           <source src="/videos/blue.mp4" type="video/mp4" />
         </video>
@@ -160,7 +193,7 @@ function Contact() {
 
       {/* Atmospheric Gradient Background */}
       <div 
-        className="absolute inset-0 pointer-events-none z-[1]"
+        className="absolute inset-0 pointer-events-none z-1"
         style={{
           background: "radial-gradient(circle at 50% 50%, rgba(77,124,255,0.12), rgba(34,211,238,0.06), transparent 60%)"
         }}

@@ -43,7 +43,7 @@ function Hero() {
           <source src="/videos/animation.mp4" type="video/mp4" />
         </video>
         {/* Lighter overlay for text readability while keeping video visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(7,9,13,0.4)] via-[rgba(7,9,13,0.5)] to-[rgba(7,9,13,0.7)]" />
+        <div className="absolute inset-0 bg-linear-to-b from-[rgba(7,9,13,0.4)] via-[rgba(7,9,13,0.5)] to-[rgba(7,9,13,0.7)]" />
       </div>
 
       {/* Hero Content */}
@@ -177,7 +177,7 @@ function Hero() {
             <AnimatedButton
               label={
                 <span className="flex items-center gap-2">
-                  START A PROJECT <ArrowUpRight size={16} />
+                  SCHEDULE MEETING <ArrowUpRight size={16} />
                 </span>
               }
               href="#connect"

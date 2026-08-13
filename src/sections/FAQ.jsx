@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, useReducedMotion, AnimatePresence } from "motion/react"
 import { Plus, ArrowUpRight } from "lucide-react"
 import { faqItems } from "../data/faq"
@@ -7,6 +7,37 @@ import Container from "../components/Container"
 function FAQ() {
   const [activeFaq, setActiveFaq] = useState(null)
   const shouldReduceMotion = useReducedMotion()
+  const videoRef = useRef(null)
+
+  // Ensure video plays when section comes into view
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoElement.play().catch(error => {
+              console.log("Video autoplay failed:", error)
+            })
+          }
+        })
+      },
+      { threshold: 0.1 } // Play when 10% of video is visible
+    )
+
+    observer.observe(videoElement)
+
+    // Also try to play immediately on mount
+    videoElement.play().catch(() => {
+      // Silently fail if autoplay is blocked
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   const toggleFaq = (id) => {
     setActiveFaq(activeFaq === id ? null : id)
@@ -56,16 +87,18 @@ function FAQ() {
       {/* Blue Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
           <source src="/videos/blue.mp4" type="video/mp4" />
         </video>
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-[#07090d] opacity-60" />
+        <div className="absolute inset-0 bg-[#07090d] opacity-40" />
       </div>
 
       <Container className="relative z-10">
@@ -103,12 +136,12 @@ function FAQ() {
                     connectSection.scrollIntoView({ behavior: "smooth" })
                   }
                 }}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#4d7cff] to-[#22d3ee] text-white rounded-full font-semibold text-base lg:text-lg hover:shadow-[0_0_30px_rgba(77,124,255,0.4)] transition-all duration-300 group relative overflow-hidden"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-linear-to-r from-[#4d7cff] to-[#22d3ee] text-white rounded-full font-semibold text-base lg:text-lg hover:shadow-[0_0_30px_rgba(77,124,255,0.4)] transition-all duration-300 group relative overflow-hidden"
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
               >
                 {/* Animated background overlay on hover */}
-                <span className="absolute inset-0 bg-gradient-to-r from-[#22d3ee] to-[#4d7cff] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute inset-0 bg-linear-to-r from-[#22d3ee] to-[#4d7cff] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <span className="relative z-10">Book a Free Call</span>
                 <span className="relative z-10 text-xl">🚀</span>
