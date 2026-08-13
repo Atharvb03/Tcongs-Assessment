@@ -95,7 +95,7 @@ function Services() {
   return (
     <section 
       id="services" 
-      className="relative py-20 md:py-28 lg:py-36 scroll-mt-20 lg:scroll-mt-21"
+      className="relative py-12 md:py-16 lg:py-20 scroll-mt-20 lg:scroll-mt-21"
     >
       <Container>
         <motion.div

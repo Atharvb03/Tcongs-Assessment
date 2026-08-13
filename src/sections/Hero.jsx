@@ -29,7 +29,7 @@ function Hero() {
   }
 
   return (
-    <section className="relative bg-[#07090d] flex items-center justify-center pt-32 lg:pt-40 pb-20 lg:pb-24 overflow-hidden z-10">
+    <section className="relative bg-[#07090d] flex items-center justify-center pt-24 lg:pt-32 pb-12 lg:pb-16 overflow-hidden z-10">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
         <video
@@ -153,9 +153,9 @@ function Hero() {
             className="font-['Space_Grotesk'] text-[clamp(2.5rem,5.5vw,4rem)] leading-[1.15] font-black mb-6 lg:mb-8"
             style={{ letterSpacing: "0.01em" }}
           >
-            <span className="text-[#f5f7fa]">SMART DIGITAL</span>
+            <span className="text-[#f5f7fa]">DIGITAL SOLUTIONS</span>
             <br />
-            <span className="text-[#f5f7fa]">SOLUTIONS FOR MODERN</span>
+            <span className="text-[#f5f7fa]">BUILT FOR MODERN</span>
             <br />
             <span className="text-[#f5f7fa]">BUSINESSES</span>
           </motion.h1>

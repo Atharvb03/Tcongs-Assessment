@@ -172,7 +172,7 @@ function Contact() {
   return (
     <section 
       id="connect" 
-      className="relative bg-[#07090d] py-20 md:py-28 lg:py-36 overflow-hidden scroll-mt-20 lg:scroll-mt-21"
+      className="relative bg-[#07090d] py-12 md:py-16 lg:py-20 overflow-hidden scroll-mt-20 lg:scroll-mt-21"
     >
       {/* Blue Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
