@@ -180,7 +180,6 @@ function Hero() {
                   SCHEDULE MEETING <ArrowUpRight size={16} />
                 </span>
               }
-              href="#connect"
               className="w-full sm:w-auto"
             />
             <a
