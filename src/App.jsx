@@ -7,11 +7,13 @@ import FAQ from "./sections/FAQ"
 import Contact from "./sections/Contact"
 import Footer from "./sections/Footer"
 import CursorGlow from "./components/CursorGlow"
+import FloatingChatButton from "./components/FloatingChatButton"
 
 function App() {
   return (
     <>
       <CursorGlow />
+      <FloatingChatButton />
       <Navbar />
       
       {/* Global Background Video (for all sections except Hero) */}
