@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect as React_useEffect } from "react"
-import { motion, useReducedMotion, useInView } from "motion/react"
+import { motion, useReducedMotion, useInView, useScroll, useTransform } from "motion/react"
 import { processSteps } from "../data/process"
 import Container from "../components/Container"
 import ProcessVisual from "../components/ProcessVisual"
@@ -10,6 +10,16 @@ const React = { useEffect: React_useEffect }
 function Process() {
   const [activeStep, setActiveStep] = useState(1)
   const shouldReduceMotion = useReducedMotion()
+  const containerRef = useRef(null)
+  
+  // Track scroll progress through the process section
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  })
+  
+  // Transform scroll progress to line height (0% to 100%)
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
 
   // Section entrance animation variants
   const sectionVariants = {
@@ -69,20 +79,19 @@ function Process() {
           </motion.div>
 
           {/* Process Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Left: Process Steps */}
             <div className="relative">
-              {/* Vertical Timeline */}
-              <div className="absolute left-8 top-0 bottom-0 w-px bg-[rgba(255,255,255,0.10)] hidden lg:block" />
+              {/* Vertical Timeline - Increased width, starts from first circle */}
+              <div className="absolute left-8 w-1 bg-[rgba(255,255,255,0.10)] hidden lg:block rounded-full" style={{ top: '2rem', bottom: 0 }} />
               
-              {/* Active Progress Indicator */}
+              {/* Active Progress Indicator - Flowing Animation with increased width, starts from first circle */}
               <motion.div
-                className="absolute left-8 w-px bg-linear-to-b from-[#4d7cff] to-[#22d3ee] hidden lg:block"
+                className="absolute left-8 w-1 bg-linear-to-b from-[#4d7cff] to-[#22d3ee] hidden lg:block rounded-full shadow-[0_0_10px_rgba(77,124,255,0.5)]"
                 style={{
-                  top: 0,
-                  height: `${((activeStep - 1) / (processSteps.length - 1)) * 100}%`
+                  top: '2rem',
+                  height: shouldReduceMotion ? `${((activeStep - 1) / (processSteps.length - 1)) * 100}%` : lineHeight
                 }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.33, 1, 0.68, 1] }}
               />
 
               {/* Process Items */}
@@ -177,15 +186,16 @@ function ProcessStep({ step, isActive, onActivate, shouldReduceMotion }) {
           {step.description}
         </motion.p>
 
-        {/* Active Indicator Dot (Timeline) */}
+        {/* Active Indicator Dot (Timeline) - Increased size */}
         <motion.div
-          className="absolute left-7.5 top-8 w-2 h-2 rounded-full border-2 hidden lg:block"
+          className="absolute left-6 top-8 w-5 h-5 rounded-full border-3 hidden lg:block"
           style={{
             borderColor: isActive ? "#4d7cff" : "rgba(255,255,255,0.2)",
-            backgroundColor: isActive ? "#4d7cff" : "transparent"
+            backgroundColor: isActive ? "#4d7cff" : "transparent",
+            boxShadow: isActive ? "0 0 15px rgba(77,124,255,0.6)" : "none"
           }}
           animate={shouldReduceMotion ? {} : {
-            scale: isActive ? [1, 1.3, 1] : 1
+            scale: isActive ? [1, 1.2, 1] : 1
           }}
           transition={{
             duration: 0.5,

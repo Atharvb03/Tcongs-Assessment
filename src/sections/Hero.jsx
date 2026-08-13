@@ -29,7 +29,7 @@ function Hero() {
   }
 
   return (
-    <section className="relative bg-[#07090d] flex items-center justify-center pt-24 lg:pt-32 pb-12 lg:pb-16 overflow-hidden z-10">
+    <section className="relative bg-[#07090d] flex items-center justify-center min-h-screen pt-24 lg:pt-32 pb-16 lg:pb-20 overflow-hidden z-10">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
         <video
@@ -153,9 +153,9 @@ function Hero() {
             className="font-['Space_Grotesk'] text-[clamp(2.5rem,5.5vw,4rem)] leading-[1.15] font-black mb-6 lg:mb-8"
             style={{ letterSpacing: "0.01em" }}
           >
-            <span className="text-[#f5f7fa]">DIGITAL SOLUTIONS</span>
+            <span className="text-[#f5f7fa]">SMART DIGITAL</span>
             <br />
-            <span className="text-[#f5f7fa]">BUILT FOR MODERN</span>
+            <span className="text-[#f5f7fa]">SOLUTIONS FOR MODERN</span>
             <br />
             <span className="text-[#f5f7fa]">BUSINESSES</span>
           </motion.h1>
@@ -163,10 +163,9 @@ function Hero() {
           {/* Description */}
           <motion.p
             variants={itemVariants}
-            className="text-[#8b93a3] text-base lg:text-lg leading-relaxed max-w-150 mb-8 lg:mb-10"
+            className="text-[#8b93a3] text-base lg:text-lg leading-relaxed mb-8 lg:mb-10 whitespace-nowrap"
           >
-            We combine strategy, design and technology to create digital
-            experiences that help ambitious businesses move forward.
+            We help brands grow with <span className="text-[#4ade80]">Web, Apps & Marketing</span> solutions across the globe.
           </motion.p>
 
           {/* CTA Buttons */}

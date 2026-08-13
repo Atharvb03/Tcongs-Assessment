@@ -97,8 +97,6 @@ function FAQ() {
         >
           <source src="/videos/blue.mp4" type="video/mp4" />
         </video>
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-[#07090d] opacity-40" />
       </div>
 
       <Container className="relative z-10">

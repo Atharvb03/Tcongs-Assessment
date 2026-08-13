@@ -7,7 +7,7 @@ export const contactContent = {
     "We'll understand your goals and requirements.",
     "You'll receive a clear proposal with pricing & timeline."
   ],
-  email: "hello@tcongs.com",
+  email: " info@tcongsinfotech.com",
   location: "Working globally",
   socialLinks: [
     { name: "LinkedIn", url: "#", icon: "Linkedin" },
@@ -18,34 +18,38 @@ export const contactContent = {
       id: "name",
       label: "Full Name",
       type: "text",
-      placeholder: "Your full name",
+      placeholder: "Full Name*",
       required: true,
-      autocomplete: "name"
+      autocomplete: "name",
+      icon: "User"
     },
     {
       id: "email",
       label: "Email Address",
       type: "email",
-      placeholder: "you@company.com",
+      placeholder: "Email Address*",
       required: true,
-      autocomplete: "email"
+      autocomplete: "email",
+      icon: "Mail"
     },
     {
       id: "phone",
       label: "Phone Number",
       type: "tel",
-      placeholder: "Phone Number",
+      placeholder: "Phone Number*",
       required: true,
       autocomplete: "tel",
-      hasCountryCode: true
+      hasCountryCode: true,
+      icon: "Phone"
     },
     {
       id: "message",
       label: "Message",
       type: "textarea",
-      placeholder: "Tell us about your project...",
-      required: false,
-      rows: 4
+      placeholder: "Tell us about your project*",
+      required: true,
+      rows: 4,
+      icon: "MessageSquare"
     },
     {
       id: "verification",
@@ -54,7 +58,8 @@ export const contactContent = {
       placeholder: "Enter answer",
       required: true,
       autocomplete: "off",
-      isDynamic: true
+      isDynamic: true,
+      icon: "ShieldCheck"
     }
   ],
   countryCodes: [

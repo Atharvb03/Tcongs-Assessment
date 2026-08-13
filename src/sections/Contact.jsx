@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { ArrowUpRight, CheckCircle2, Globe, ExternalLink } from "lucide-react"
+import { ArrowUpRight, CheckCircle2, Globe, ExternalLink, User, Mail, Phone, MessageSquare, ShieldCheck, CheckCircle } from "lucide-react"
 import { contactContent } from "../data/contact"
 import Container from "../components/Container"
 
@@ -18,6 +18,15 @@ function Contact() {
   const [isSuccess, setIsSuccess] = useState(false)
   const shouldReduceMotion = useReducedMotion()
   const videoRef = useRef(null)
+
+  // Icon mapping for fields
+  const iconMap = {
+    User,
+    Mail,
+    Phone,
+    MessageSquare,
+    ShieldCheck
+  }
 
   // Generate random math question
   const [mathQuestion, setMathQuestion] = useState({ num1: 0, num2: 0, answer: 0 })
@@ -125,6 +134,13 @@ function Contact() {
       newErrors.phone = "Please enter your phone number."
     } else if (!/^\d{10}$/.test(formData.phone.trim())) {
       newErrors.phone = "Please enter a valid 10-digit phone number."
+    }
+
+    // Message validation - required field
+    if (!formData.message.trim()) {
+      newErrors.message = "Please tell us about your project."
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters."
     }
 
     // Verification validation - check against dynamic math answer
@@ -242,8 +258,8 @@ function Contact() {
                     }}
                     className="flex items-start gap-3"
                   >
-                    <div className="shrink-0 w-6 h-6 rounded-full bg-[rgba(77,124,255,0.15)] flex items-center justify-center mt-0.5">
-                      <span className="text-[#4d7cff] text-xs font-bold">{index + 1}</span>
+                    <div className="shrink-0 mt-0.5">
+                      <CheckCircle size={20} className="text-[#4ade80]" strokeWidth={2} />
                     </div>
                     <p className="text-[#f5f7fa] text-sm leading-relaxed">
                       {step}
@@ -253,26 +269,30 @@ function Contact() {
               </div>
 
               {/* Contact Details */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div>
-                  <p className="text-[#8b93a3] text-xs uppercase tracking-wider mb-2">
-                    EMAIL
-                  </p>
-                  <a 
-                    href={`mailto:${contactContent.email}`}
-                    className="text-[#f5f7fa] hover:text-[#22d3ee] transition-colors duration-300"
-                  >
-                    {contactContent.email}
-                  </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+                {/* Left: Email and Location stacked */}
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-[#8b93a3] text-xs uppercase tracking-wider mb-2">
+                      EMAIL
+                    </p>
+                    <a 
+                      href={`mailto:${contactContent.email}`}
+                      className="text-[#f5f7fa] hover:text-[#22d3ee] transition-colors duration-300 text-base whitespace-nowrap inline-block"
+                    >
+                      {contactContent.email}
+                    </a>
+                  </div>
+
+                  <div>
+                    <p className="text-[#8b93a3] text-xs uppercase tracking-wider mb-2">
+                      LOCATION
+                    </p>
+                    <p className="text-[#f5f7fa] text-base">{contactContent.location}</p>
+                  </div>
                 </div>
 
-                <div>
-                  <p className="text-[#8b93a3] text-xs uppercase tracking-wider mb-2">
-                    LOCATION
-                  </p>
-                  <p className="text-[#f5f7fa]">{contactContent.location}</p>
-                </div>
-
+                {/* Right: Social */}
                 <div>
                   <p className="text-[#8b93a3] text-xs uppercase tracking-wider mb-2">
                     SOCIAL
@@ -305,31 +325,42 @@ function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-8 border border-[#22d3ee] rounded-2xl p-6 lg:p-8" noValidate>
                   {contactContent.fields.map((field) => (
                     <div key={field.id}>
-                      <label
-                        htmlFor={field.id}
-                        className={`
-                          block text-sm font-medium mb-3 transition-colors duration-300
-                          ${errors[field.id] 
-                            ? "text-[#ff6b6b]" 
-                            : formData[field.id] 
-                            ? "text-[#4d7cff]" 
-                            : "text-[#8b93a3]"
+                      {/* Only show label for Human Verification field */}
+                      {field.id === "verification" && (
+                        <label
+                          htmlFor={field.id}
+                          className={`
+                            block text-sm font-medium mb-3 transition-colors duration-300
+                            ${errors[field.id] 
+                              ? "text-[#ff6b6b]" 
+                              : formData[field.id] 
+                              ? "text-[#4d7cff]" 
+                              : "text-[#8b93a3]"
+                            }
+                          `}
+                        >
+                          {/* Dynamic label for verification field */}
+                          {field.isDynamic 
+                            ? `${field.label}: ${mathQuestion.num1} + ${mathQuestion.num2} =`
+                            : field.label
                           }
-                        `}
-                      >
-                        {/* Dynamic label for verification field */}
-                        {field.isDynamic 
-                          ? `${field.label}: ${mathQuestion.num1} + ${mathQuestion.num2} =`
-                          : field.label
-                        }
-                        {field.required && <span className="text-[#4d7cff] ml-1">*</span>}
-                      </label>
+                          {field.required && <span className="text-[#4d7cff] ml-1">*</span>}
+                        </label>
+                      )}
+
+                      {/* Hidden label for accessibility for non-verification fields */}
+                      {field.id !== "verification" && (
+                        <label htmlFor={field.id} className="sr-only">
+                          {field.label}
+                          {field.required && " (required)"}
+                        </label>
+                      )}
 
                       {/* Special handling for phone field with country code */}
                       {field.hasCountryCode ? (
-                        <div className="flex gap-3">
+                        <div className="flex gap-2">
                           {/* Country Code Dropdown */}
-                          <div className="relative w-40 shrink-0">
+                          <div className="relative w-32 shrink-0">
                             <select
                               value={formData.countryCode}
                               onChange={(e) => setFormData(prev => ({ ...prev, countryCode: e.target.value }))}
@@ -361,8 +392,12 @@ function Contact() {
                             </select>
                           </div>
 
-                          {/* Phone Number Input */}
-                          <div className="flex-1">
+                          {/* Phone Number Input with Icon */}
+                          <div className="flex-1 relative">
+                            {field.icon && (() => {
+                              const Icon = iconMap[field.icon]
+                              return Icon ? <Icon size={18} className="absolute left-0 top-1/2 -translate-y-1/2 text-[#8b93a3]" /> : null
+                            })()}
                             <input
                               type="tel"
                               id={field.id}
@@ -376,7 +411,7 @@ function Contact() {
                               aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
                               className={`
                                 w-full bg-transparent text-[#f5f7fa] placeholder:text-[#8b93a3]
-                                border-0 border-b py-3 transition-all duration-300
+                                border-0 border-b py-3 pl-7 transition-all duration-300
                                 focus:outline-none focus:ring-0
                                 ${errors[field.id]
                                   ? "border-[#ff6b6b]"
@@ -387,50 +422,62 @@ function Contact() {
                           </div>
                         </div>
                       ) : field.type === "textarea" ? (
-                        /* Textarea for message field */
-                        <textarea
-                          id={field.id}
-                          name={field.id}
-                          value={formData[field.id]}
-                          onChange={handleChange}
-                          placeholder={field.placeholder}
-                          rows={field.rows}
-                          required={field.required}
-                          aria-invalid={!!errors[field.id]}
-                          aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
-                          className={`
-                            w-full bg-transparent text-[#f5f7fa] placeholder:text-[#8b93a3]
-                            border-0 border-b transition-all duration-300
-                            focus:outline-none focus:ring-0 resize-y py-3
-                            ${errors[field.id]
-                              ? "border-[#ff6b6b]"
-                              : "border-[rgba(255,255,255,0.12)] focus:border-[#4d7cff]"
-                            }
-                          `}
-                        />
+                        /* Textarea for message field with Icon */
+                        <div className="relative">
+                          {field.icon && (() => {
+                            const Icon = iconMap[field.icon]
+                            return Icon ? <Icon size={18} className="absolute left-0 top-3 text-[#8b93a3]" /> : null
+                          })()}
+                          <textarea
+                            id={field.id}
+                            name={field.id}
+                            value={formData[field.id]}
+                            onChange={handleChange}
+                            placeholder={field.placeholder}
+                            rows={field.rows}
+                            required={field.required}
+                            aria-invalid={!!errors[field.id]}
+                            aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
+                            className={`
+                              w-full bg-transparent text-[#f5f7fa] placeholder:text-[#8b93a3]
+                              border-0 border-b transition-all duration-300
+                              focus:outline-none focus:ring-0 resize-y py-3 pl-7
+                              ${errors[field.id]
+                                ? "border-[#ff6b6b]"
+                                : "border-[rgba(255,255,255,0.12)] focus:border-[#4d7cff]"
+                              }
+                            `}
+                          />
+                        </div>
                       ) : (
-                        /* Regular input fields */
-                        <input
-                          type={field.type}
-                          id={field.id}
-                          name={field.id}
-                          value={formData[field.id]}
-                          onChange={handleChange}
-                          placeholder={field.placeholder}
-                          required={field.required}
-                          autoComplete={field.autocomplete}
-                          aria-invalid={!!errors[field.id]}
-                          aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
-                          className={`
-                            w-full bg-transparent text-[#f5f7fa] placeholder:text-[#8b93a3]
-                            border-0 border-b py-3 transition-all duration-300
-                            focus:outline-none focus:ring-0
-                            ${errors[field.id]
+                        /* Regular input fields with Icon */
+                        <div className="relative">
+                          {field.icon && (() => {
+                            const Icon = iconMap[field.icon]
+                            return Icon ? <Icon size={18} className="absolute left-0 top-1/2 -translate-y-1/2 text-[#8b93a3]" /> : null
+                          })()}
+                          <input
+                            type={field.type}
+                            id={field.id}
+                            name={field.id}
+                            value={formData[field.id]}
+                            onChange={handleChange}
+                            placeholder={field.placeholder}
+                            required={field.required}
+                            autoComplete={field.autocomplete}
+                            aria-invalid={!!errors[field.id]}
+                            aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
+                            className={`
+                              w-full bg-transparent text-[#f5f7fa] placeholder:text-[#8b93a3]
+                              border-0 border-b py-3 pl-7 transition-all duration-300
+                              focus:outline-none focus:ring-0
+                              ${errors[field.id]
                               ? "border-[#ff6b6b]"
                               : "border-[rgba(255,255,255,0.12)] focus:border-[#4d7cff]"
                             }
                           `}
-                        />
+                          />
+                        </div>
                       )}
 
                       {errors[field.id] && (

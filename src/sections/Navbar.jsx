@@ -78,8 +78,8 @@ function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "#hero", section: "home" },
-    { label: "Solutions", href: "#solutions", section: "solutions", hasDropdown: true },
     { label: "Company", href: "#company", section: "company" },
+    { label: "Solutions", href: "#solutions", section: "solutions", hasDropdown: true },
     { label: "Connect", href: "#connect", section: "connect" }
   ]
 

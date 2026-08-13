@@ -73,21 +73,59 @@ function CTA() {
               From strategy and design to development and growth, we build digital experiences that help ambitious businesses move forward.
             </p>
 
-            {/* CTA Button */}
-            <AnimatedButton
-              label={
-                <span className="flex items-center gap-2">
-                  START YOUR PROJECT <ArrowUpRight size={18} />
-                </span>
-              }
-              onClick={() => {
-                const contactSection = document.querySelector("#connect")
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: "smooth" })
+            {/* CTA Button with Badge */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <AnimatedButton
+                label={
+                  <span className="flex items-center gap-2">
+                    START YOUR PROJECT <ArrowUpRight size={18} />
+                  </span>
                 }
-              }}
-              className="inline-flex"
-            />
+                onClick={() => {
+                  const contactSection = document.querySelector("#connect")
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: "smooth" })
+                  }
+                }}
+                className="inline-flex"
+              />
+
+              {/* Crafted for Impact Badge */}
+              <motion.div
+                initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  duration: shouldReduceMotion ? 0 : 0.5,
+                  delay: shouldReduceMotion ? 0 : 0.3,
+                  ease: [0.33, 1, 0.68, 1]
+                }}
+                className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-[rgba(77,124,255,0.3)] bg-[rgba(77,124,255,0.05)] backdrop-blur-sm"
+              >
+                {/* Hexagon Icon with Sparkle */}
+                <div className="relative w-10 h-10 shrink-0">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Hexagon */}
+                    <path 
+                      d="M20 5 L30 12.5 L30 27.5 L20 35 L10 27.5 L10 12.5 Z" 
+                      stroke="#4d7cff" 
+                      strokeWidth="1.5" 
+                      fill="rgba(77,124,255,0.1)"
+                    />
+                    {/* Sparkle/Star */}
+                    <path 
+                      d="M20 14 L21 18 L20 22 L19 18 Z M16 18 L20 19 L24 18 L20 17 Z" 
+                      fill="#22d3ee"
+                    />
+                  </svg>
+                </div>
+                
+                {/* Text */}
+                <span className="text-[#f5f7fa] text-sm font-medium whitespace-nowrap">
+                  Crafted for Impact
+                </span>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Right: Visual */}
